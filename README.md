@@ -1,2 +1,2 @@
 # React-Django-FullStackDev-Course
-A self learning project to learn React
+A self learning project to do hands on with React.

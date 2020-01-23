@@ -11,13 +11,6 @@ from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope, Token
 from api.models import Package, PackagePermission, WishlistItem, Booking
 from api.serializers import PackageSerializer, BookingSerializer
 
-class PackageCreateView(CreateAPIView):
-    queryset = Package.objects.all()
-    serializer_class = PackageSerializer
-
-class PackagePagination(PageNumberPagination):
-    page_size = 9
-
 class CanWritePackageFilterBackend(BaseFilterBackend):
     def filter_queryset(self, request, queryset, view):
         queryset = self.check_permission(request, queryset, view)
@@ -92,28 +85,3 @@ class WishlistItemViewSet(viewsets.ViewSet):
 
     def retrieve(self, request, pk=None):
         return Response()
-
-class PackagePriceFilterBackend(BaseFilterBackend):
-    def filter_queryset(self, request, queryset, view):
-        filters = {}
-        price_min = request.query_params.get('price_min', None)
-        if price_min:
-            filters['price__gte'] = price_min
-        price_max = request.query_params.get('price_max', None)
-        if price_max:
-            filters['price__lte'] = price_max
-        return queryset.filter(**filters)
-
-class PublicPackageViewSet(viewsets.ModelViewSet):
-    permission_classes = [TokenHasScope]
-    required_scopes = ['read']
-    queryset = Package.objects.all().order_by('-price')
-    serializer_class = PackageSerializer
-    pagination_class = PackagePagination
-    filter_backends = (PackagePriceFilterBackend, SearchFilter)
-    search_fields = ('name', 'promo')
-
-class BookingViewSet(viewsets.ModelViewSet):
-    queryset = Booking.objects.all()
-    serializer_class = BookingSerializer
-    permission_classes = [BasePermission]

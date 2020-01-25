@@ -8,8 +8,8 @@ from rest_framework.permissions import BasePermission
 
 from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope, TokenHasScope
 
-from api.models import Package, PackagePermission, WishlistItem, Booking
-from api.serializers import PackageSerializer, BookingSerializer
+from api.models import Package, PackagePermission, WishlistItem
+from api.serializers import PackageSerializer
 
 class CanWritePackageFilterBackend(BaseFilterBackend):
     def filter_queryset(self, request, queryset, view):

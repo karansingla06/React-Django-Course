@@ -10,6 +10,7 @@ import api.views
 router = DefaultRouter()
 router.register(r'packages', api.views.PackageViewSet)
 router.register(r'wishlist', api.views.WishlistItemViewSet)
+router.register(r'public/packages', api.views.PublicPackageViewSet)
 
 urlpatterns = [
     re_path(r'^api/v1/', include(router.urls)),
